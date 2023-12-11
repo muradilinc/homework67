@@ -1,9 +1,9 @@
-import React from 'react';
+import SafePage from '../SafePage/SafePage';
 
 const App = () => {
   return (
     <div>
-      <h1>Safe</h1>
+      <SafePage/>
     </div>
   );
 };
