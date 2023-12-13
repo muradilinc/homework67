@@ -1,25 +1,24 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
 import {changePassword, checkPassword, clearPassword, removePassword} from './SafeSlice';
+import {renderNumber} from '../../utils/numbers';
+import {useNavigate} from 'react-router-dom';
 
 const SafePage = () => {
+  const navigate = useNavigate();
   const {password, status} = useSelector((state: RootState) => state.safe);
   const dispatch = useDispatch();
-  const numbers: number[] = [];
-
-  for (let number = 1; number < 10; number++) {
-    numbers.push(number);
-  }
 
   const checkingPassword = () => {
     dispatch(checkPassword());
     setTimeout(() => {
       dispatch(clearPassword());
+      navigate('/calculator');
     }, 3000);
   };
 
   return (
-    <div className="container mx-auto">
+    <>
       <div className="flex justify-center items-center h-[80vh]">
         <div className="border w-[300px] border-black p-2">
           <div className="w-[80%] mx-auto">
@@ -36,7 +35,7 @@ const SafePage = () => {
             </div>
             <div className="grid grid-cols-3 gap-2 mt-3">
               {
-                numbers.reverse().map((number) =>
+                renderNumber().reverse().map((number) =>
                   <button
                     type="button"
                     onClick={() => dispatch(changePassword(number))}
@@ -72,7 +71,7 @@ const SafePage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
