@@ -30,18 +30,8 @@ export const SafeSlice = createSlice({
     checkPassword: (state) => {
       if (state.password.join('') === password){
         state.status = 'success';
-        state.password = [];
-        setTimeout(() => {
-          state.status = 'pending';
-          state.password = [];
-        }, 3000);
       } else {
         state.status = 'unsuccessful';
-        state.password = [];
-        setTimeout(() => {
-          state.status = 'pending';
-          state.password = [];
-        }, 3000);
       }
     },
   }

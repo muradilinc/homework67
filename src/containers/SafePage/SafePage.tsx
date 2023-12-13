@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
-import {changePassword, checkPassword, removePassword} from './SafeSlice';
+import {changePassword, checkPassword, clearPassword, removePassword} from './SafeSlice';
 
 const SafePage = () => {
   const {password, status} = useSelector((state: RootState) => state.safe);
@@ -11,9 +11,12 @@ const SafePage = () => {
     numbers.push(number);
   }
 
-
-  console.log(status);
-
+  const checkingPassword = () => {
+    dispatch(checkPassword());
+    setTimeout(() => {
+      dispatch(clearPassword());
+    }, 3000);
+  };
 
   return (
     <div className="container mx-auto">
@@ -61,7 +64,7 @@ const SafePage = () => {
               <button
                 type="button"
                 className="grid place-content-center border border-black"
-                onClick={() => dispatch(checkPassword())}
+                onClick={checkingPassword}
               >
                 E
               </button>
