@@ -10,9 +10,9 @@ const CalculatorPage = () => {
 
   const actionCalc = (type: string) => {
     dispatch(setAction(type));
-    if (memberAction){
-      dispatch(calculate());
-    }
+    // if (memberAction){
+    //   dispatch(calculate());
+    // }
   };
 
   return (

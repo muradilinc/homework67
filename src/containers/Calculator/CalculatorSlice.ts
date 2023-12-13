@@ -4,7 +4,7 @@ interface CalculatorState {
   firstNumber: string;
   secondNumber: string;
   showNumbers: string;
-  typeAction: string;
+  operator: string;
   memberNumbers: boolean;
   memberAction: boolean;
   common: number;
@@ -14,7 +14,7 @@ const initialState: CalculatorState = {
   firstNumber: '',
   secondNumber: '',
   showNumbers: '',
-  typeAction: '',
+  operator: '',
   memberNumbers: false,
   memberAction: false,
   common: 0,
@@ -25,7 +25,7 @@ export const CalculatorSlice = createSlice({
   initialState,
   reducers: {
     calculate: (state) => {
-      switch(state.typeAction){
+      switch(state.operator){
         case '+':
           state.common = parseInt(state.firstNumber) + parseInt(state.secondNumber);
           state.showNumbers = state.common.toString();
@@ -55,15 +55,21 @@ export const CalculatorSlice = createSlice({
       state.firstNumber = '';
       state.secondNumber = '';
       state.showNumbers = '';
-      state.typeAction = '';
+      state.operator = '';
       state.common = 0;
     },
     setAction: (state, action: PayloadAction<string>) => {
+      if (state.operator && state.memberNumbers) {
+        CalculatorSlice.caseReducers.calculate(state);
+        state.showNumbers = state.common.toString();
+        state.firstNumber = state.common.toString();
+      } else {
+        state.showNumbers = '';
+      }
 
-      state.typeAction = action.payload;
-      state.showNumbers = '';
+      state.operator = action.payload;
       state.memberNumbers = true;
-      // state.memberAction = true;
+      state.memberAction = true;
     },
     setNumbers: (state, action: PayloadAction<string>) => {
       state.showNumbers = state.showNumbers + action.payload;
@@ -72,10 +78,6 @@ export const CalculatorSlice = createSlice({
       } else {
         state.firstNumber = state.firstNumber + action.payload;
       }
-
-      // if (state.memberAction){
-      //   state.firstNumber = state.common.toString();
-      // }
     },
   }
 });
