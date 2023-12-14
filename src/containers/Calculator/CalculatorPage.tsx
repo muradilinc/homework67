@@ -9,7 +9,6 @@ const CalculatorPage = () => {
 
   const actionCalc = (type: string) => {
     dispatch(setOperator(type));
-    // dispatch(calculate());
   };
 
   return (
