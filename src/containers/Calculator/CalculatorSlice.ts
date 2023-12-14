@@ -5,8 +5,8 @@ interface CalculatorState {
   secondNumber: string;
   showNumbers: string;
   operator: string;
-  memberNumbers: boolean;
-  memberAction: boolean;
+  currentOperator: string;
+  memberNumber: boolean;
   common: number;
 }
 
@@ -15,8 +15,8 @@ const initialState: CalculatorState = {
   secondNumber: '',
   showNumbers: '',
   operator: '',
-  memberNumbers: false,
-  memberAction: false,
+  currentOperator: '',
+  memberNumber: false,
   common: 0,
 };
 
@@ -29,26 +29,31 @@ export const CalculatorSlice = createSlice({
         case '+':
           state.common = parseInt(state.firstNumber) + parseInt(state.secondNumber);
           state.showNumbers = state.common.toString();
+          state.firstNumber = state.common.toString();
+          state.operator = '';
           break;
         case '-':
           state.common = parseInt(state.firstNumber) - parseInt(state.secondNumber);
           state.showNumbers = state.common.toString();
+          state.firstNumber = state.common.toString();
+          state.operator = '';
           break;
         case '*':
           state.common = parseInt(state.firstNumber) * parseInt(state.secondNumber);
           state.showNumbers = state.common.toString();
+          state.firstNumber = state.common.toString();
+          state.operator = '';
           break;
         case '/':
           state.common = parseInt(state.firstNumber) / parseInt(state.secondNumber);
           state.showNumbers = state.common.toString();
+          state.firstNumber = state.common.toString();
+          state.operator = '';
           break;
         default:
           break;
       }
 
-      state.memberNumbers = false;
-      state.memberAction = false;
-      state.firstNumber = '';
       state.secondNumber = '';
     },
     clear: (state) => {
@@ -58,22 +63,17 @@ export const CalculatorSlice = createSlice({
       state.operator = '';
       state.common = 0;
     },
-    setAction: (state, action: PayloadAction<string>) => {
-      if (state.operator && state.memberNumbers) {
-        CalculatorSlice.caseReducers.calculate(state);
-        state.showNumbers = state.common.toString();
-        state.firstNumber = state.common.toString();
-      } else {
+    setOperator: (state, action: PayloadAction<string>) => {
+      state.operator = action.payload;
+      if (state.operator){
+        state.memberNumber = true;
         state.showNumbers = '';
       }
-
-      state.operator = action.payload;
-      state.memberNumbers = true;
-      state.memberAction = true;
     },
     setNumbers: (state, action: PayloadAction<string>) => {
       state.showNumbers = state.showNumbers + action.payload;
-      if (state.memberNumbers){
+
+      if (state.memberNumber){
         state.secondNumber = state.secondNumber + action.payload;
       } else {
         state.firstNumber = state.firstNumber + action.payload;
@@ -85,7 +85,7 @@ export const CalculatorSlice = createSlice({
 export const calculatorReducer = CalculatorSlice.reducer;
 export const {
   setNumbers,
-  setAction,
+  setOperator,
   calculate,
   clear,
 } = CalculatorSlice.actions;

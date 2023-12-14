@@ -1,18 +1,15 @@
 import {renderNumber} from '../../utils/numbers';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
-import {calculate, setAction, setNumbers, clear} from './CalculatorSlice';
+import {calculate, setOperator, setNumbers, clear} from './CalculatorSlice';
 
 const CalculatorPage = () => {
-  const {showNumbers, memberAction} = useSelector((state: RootState) => state.calculator);
+  const {showNumbers, operator} = useSelector((state: RootState) => state.calculator);
   const dispatch = useDispatch();
-  console.log(memberAction);
 
   const actionCalc = (type: string) => {
-    dispatch(setAction(type));
-    // if (memberAction){
-    //   dispatch(calculate());
-    // }
+    dispatch(setOperator(type));
+    // dispatch(calculate());
   };
 
   return (
@@ -47,6 +44,7 @@ const CalculatorPage = () => {
             <button
               type="button"
               className="grid col-span-2 place-content-center border border-black"
+              onClick={() => dispatch(setNumbers('0'))}
             >
               0
             </button>
@@ -63,6 +61,7 @@ const CalculatorPage = () => {
               type="button"
               className="grid place-content-center border border-black"
               onClick={() => actionCalc('+')}
+              disabled={operator === '+'}
             >
               +
             </button>
@@ -70,6 +69,7 @@ const CalculatorPage = () => {
               type="button"
               className="grid place-content-center border border-black"
               onClick={() => actionCalc('-')}
+              disabled={operator === '-'}
             >
               -
             </button>
@@ -77,6 +77,7 @@ const CalculatorPage = () => {
               type="button"
               className="grid place-content-center border border-black"
               onClick={() => actionCalc('/')}
+              disabled={operator === '/'}
             >
               /
             </button>
@@ -84,6 +85,7 @@ const CalculatorPage = () => {
               type="button"
               className="grid place-content-center border border-black"
               onClick={() => actionCalc('*')}
+              disabled={operator === '*'}
             >
               *
             </button>
